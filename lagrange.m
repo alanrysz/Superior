@@ -22,7 +22,7 @@ function varargout = lagrange(varargin)
 
 % Edit the above text to modify the response to help lagrange
 
-% Last Modified by GUIDE v2.5 13-Nov-2019 13:57:13
+% Last Modified by GUIDE v2.5 13-Nov-2019 16:36:10
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -107,3 +107,27 @@ end
 % Hint: get(hObject,'Value') returns toggle state of togglebutton3
 
 
+
+% --- Executes on button press in pushbutton2.
+function pushbutton2_Callback(hObject, eventdata, handles)
+%valores para prueba, hay que conectar cada fila con x e y
+x = [0,1,2,3,4,5,6];
+ y = [0 .8415 0.9093 0.1411 -0.7568 -0.9589 -0.2794];
+sum=0;
+
+    for i=1:length(x)
+        p=1;
+        for j=1:length(x)
+            if j~=i
+                c = poly(x(j))/(x(i)-x(j));
+                p = conv(p,c);
+            end
+        end
+        term = p*y(i);
+        sum= sum + term;
+    end
+    disp(sum);
+    
+    sum = sum + y(i)*p;
+    
+    set(handles.mostrarFormula, 'String', sum);
