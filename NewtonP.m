@@ -1,15 +1,19 @@
-function sum = NewtonP(x,y)
-sum=0;
-    for i=1:length(x)
-        p=1;
-        for j=1:length(x)
-            if j~=i
-                c = poly(x(j))/(x(i)-x(j));
-                p = conv(p,c);
-            end
+function [C,D] = NewtonP(X,Y) 
+    n = length(X); 
+    D = zeros(n,n); 
+    D(:,1) = Y'; 
+    for j=2:n,   
+        for k=j:n,       
+            D(k,j) = (D(k,j-1)-D(k-1,j-1))/(X(k)-X(k-j+1));   
         end
-        term = p*y(i);
-        sum= sum + term;
     end
-    disp(sum);
+    C = D(n,n); 
+    for k=(n-1):-1:1,   
+        C = conv(C,poly(X(k)));   
+        m = length(C);   
+        C(m) = C(m) + D(k,k); 
+    end
+    disp(poly2sym(C));
+    disp(D);
+    
 end

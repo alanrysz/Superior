@@ -22,7 +22,7 @@ function varargout = Finter(varargin)
 
 % Edit the above text to modify the response to help Finter
 
-% Last Modified by GUIDE v2.5 15-Nov-2019 22:59:05
+% Last Modified by GUIDE v2.5 18-Nov-2019 12:02:09
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -180,13 +180,14 @@ data = get(handles.tableField,'data');
     
 if hObject == handles.radiobutton1
     P = lagrange_interpol(arrayX, arrayY);
-    set(handles.text10, 'String', P);
+    set(handles.text10, 'String', char(P));
     
 elseif hObject == handles.radiobutton2
      set(handles.text10, 'String', NewtonR(arrayX, arrayY));
 else
-     set(handles.text10, 'String', NewtonP(arrayX, arrayY));
-        
+     [C, D] = NewtonP(arrayX, arrayY);
+     set(handles.text10, 'String', char(poly2sym(C)));
+     set(handles.text8, 'String', num2str(D));
 end
 
 
@@ -248,3 +249,16 @@ data = get(handles.tableField,'data');
    set(handles.text16, 'String', polyvalm(C,N)); 
    
  
+
+
+% --- Executes during object creation, after setting all properties.
+function figure1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to figure1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+function tableField_CreateFcn(hObject, eventdata, handles)
+
+function tableField_CellSelectionCallback(hObject, eventdata, handles)
+
+function tableField_CellEditCallback(hObject, eventdata, handles)

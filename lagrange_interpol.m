@@ -1,5 +1,5 @@
-function sum = lagrange_interpol(x,y)
-sum=0;
+function pol = lagrange_interpol(x,y)
+    sum=0;
     for i=1:length(x)
         p=1;
         for j=1:length(x)
@@ -11,5 +11,7 @@ sum=0;
         term = p*y(i);
         sum= sum + term;
     end
+    pol = poly2sym(sum);
+    disp(poly2sym(sum));
     disp(sum);
 end

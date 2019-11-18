@@ -22,7 +22,7 @@ function varargout = Finter(varargin)
 
 % Edit the above text to modify the response to help Finter
 
-% Last Modified by GUIDE v2.5 15-Nov-2019 22:59:05
+% Last Modified by GUIDE v2.5 18-Nov-2019 10:11:20
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -179,11 +179,25 @@ data = get(handles.tableField,'data');
     end
     
 if hObject == handles.radiobutton1
-    P = lagrange_interpol(arrayX, arrayY);
-    set(handles.text10, 'Data', (poly2sym(P)));
+    pol=0;
+    sum=0;
+    for i=1:length(arrayX)
+        p=1;
+        for j=1:length(arrayX)
+            if j~=i
+                c = poly(arrayX(j))/(arrayX(i)-arrayX(j));
+                p = conv(p,c);
+            end
+        end
+        term = p*arrayY(i);
+        sum= sum + term;
+    end
+    pol = poly2sym(sum);
+    fprintf('%s mm.\n', char(pol))
+    set(handles.text10, 'String', char(pol));
     
 elseif hObject == handles.radiobutton2
-     set(handles.text10, 'String', 'Newton Regresion');
+     set(handles.text10, 'String', NewtonR(arrayX, arrayY));
 else
      set(handles.text10, 'String', NewtonP(arrayX, arrayY));
         
@@ -231,8 +245,8 @@ function pushbutton15_Callback(hObject, eventdata, handles)
 
 data = get(handles.tableField,'data');
 
-    arrayX = [1 2 4];
-    arrayY = [1 8 64];
+    arrayX = [];
+    arrayY = [];
     count = size(data,1);
     for j = 1:count
         disp(data{j,1});
@@ -240,10 +254,24 @@ data = get(handles.tableField,'data');
         arrayY = [arrayY, str2double(data{j,2})];
     end
     
-   N = get(handles.edit6, 'String');
+   N = str2double(get(handles.edit6, 'String'));
    
-   C = lagrange_interpol(arrayX, arrayY);
    
-   set(handles.text16, 'String', polyval(C,N));
+   C = NewtonP(arrayX, arrayY);
+
+   set(handles.text16, 'String', polyvalm(C,N)); 
    
  
+
+
+% --- Executes during object creation, after setting all properties.
+function figure1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to figure1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+function tableField_CreateFcn(hObject, eventdata, handles)
+
+function tableField_CellSelectionCallback(hObject, eventdata, handles)
+
+function tableField_CellEditCallback(hObject, eventdata, handles)
