@@ -37,4 +37,5 @@ while o < (n+1) && M1(o-2)~=0
 end
 Poli = sum(R);
 Polinomio = simplify(Poli);
+Polinomio = expand(Polinomio);
 end
