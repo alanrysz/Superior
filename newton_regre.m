@@ -1,13 +1,13 @@
-function Polinomio = newton_regre(x,y)
-p=length(x);
-n = length(x);
+function Polinomio = newton_regre(X,y)
+n = length(X);
+p = length(X);
 a(1) = y(1);
 for k = 1 : n - 1
-   d(k, 1) = (y(k+1) - y(k))/(x(k+1) - x(k));
+   d(k, 1) = (y(k+1) - y(k))/(X(k+1) - X(k));
 end
 for j = 2 : n - 1
    for k = 1 : n - j
-      d(k, j) = (d(k+1, j - 1) - d(k, j - 1))/(x(k+j) - x(k));
+      d(k, j) = (d(k+1, j - 1) - d(k, j - 1))/(X(k+j) - X(k));
    end
 end
 M = d;
@@ -18,14 +18,14 @@ end
 Df(1) = 1;
 c(1) = a(1);
 for j = 2 : n
-   Df(j)=(p - x(j-1)) .* Df(j-1);
+   Df(j)=(p - X(j-1)) .* Df(j-1);
    c(j) = a(j) .* Df(j);
 end
-syms w
+syms x
 aux = length(M1);
 m = 1;
 while m < (n+1)
-  A(m) = (w-(x(m)));
+  A(m) = (x-(X(m)));
   m=m+1;
 end
   o = 3;
@@ -38,4 +38,3 @@ end
 Poli = sum(R);
 Polinomio = simplify(Poli);
 end
-
