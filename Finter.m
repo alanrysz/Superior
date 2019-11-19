@@ -173,18 +173,21 @@ data = get(handles.tableField,'data');
     arrayY = [];
     count = size(data,1);
     for j = 1:count
-        disp(data{j,1});
+        %disp(data{j,1});
         arrayX = [arrayX, str2double(data{j,1})];
         arrayY = [arrayY, str2double(data{j,2})];
     end
     
 if hObject == handles.radiobutton1
-    P = lagrange_interpol(arrayX, arrayY);
-    set(handles.text10, 'String', char(P));
-    
+    set(handles.text8, 'String', '');
+    [pol, p] = lagrange_interpol(arrayX, arrayY);
+    set(handles.text8, 'String', char(p));
+    set(handles.text10, 'String', char(pol));
 elseif hObject == handles.radiobutton2
-     set(handles.text10, 'String', NewtonR(arrayX, arrayY));
+     set(handles.text8, 'String', '');
+     set(handles.text10, 'String', char(newton_regre(arrayX, arrayY)));
 else
+     set(handles.text8, 'String', '');
      [C, D] = NewtonP(arrayX, arrayY);
      set(handles.text10, 'String', char(poly2sym(C)));
      set(handles.text8, 'String', num2str(D));
@@ -236,7 +239,7 @@ data = get(handles.tableField,'data');
     arrayY = [];
     count = size(data,1);
     for j = 1:count
-        disp(data{j,1});
+        %disp(data{j,1});
         arrayX = [arrayX, str2double(data{j,1})];
         arrayY = [arrayY, str2double(data{j,2})];
     end

@@ -12,8 +12,5 @@ function [C,D] = NewtonP(X,Y)
         C = conv(C,poly(X(k)));   
         m = length(C);   
         C(m) = C(m) + D(k,k); 
-    end
-    disp(poly2sym(C));
-    disp(D);
-    
+    end    
 end
