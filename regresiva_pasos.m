@@ -1,4 +1,4 @@
-function Polinomio = newton_regre(X,y)
+function M = regresiva_pasos(X,y)
 n = length(X);
 p = length(X);
 a(1) = y(1);

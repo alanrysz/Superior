@@ -1,4 +1,4 @@
-function sum = lagrange_interpol(x,y)
+function term = lagrangePasos(x,y)
 sum=0;
     for i=1:length(x)
         p=1;
@@ -11,5 +11,5 @@ sum=0;
         term = p*y(i);
         sum= sum + term;
     end
-    disp(sum);
+    disp(term);
 end

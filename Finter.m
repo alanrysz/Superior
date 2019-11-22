@@ -22,7 +22,7 @@ function varargout = Finter(varargin)
 
 % Edit the above text to modify the response to help Finter
 
-% Last Modified by GUIDE v2.5 18-Nov-2019 12:02:09
+% Last Modified by GUIDE v2.5 19-Nov-2019 21:17:28
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -161,6 +161,8 @@ else
 end
 
 
+
+
 % --- Executes on button press in radio1.
 
 
@@ -173,24 +175,35 @@ data = get(handles.tableField,'data');
     arrayY = [];
     count = size(data,1);
     for j = 1:count
-        %disp(data{j,1});
+        disp(data{j,1});
         arrayX = [arrayX, str2double(data{j,1})];
         arrayY = [arrayY, str2double(data{j,2})];
     end
     
 if hObject == handles.radiobutton1
-    set(handles.text8, 'String', '');
-    [pol, p] = lagrange_interpol(arrayX, arrayY);
-    set(handles.text8, 'String', char(p));
-    set(handles.text10, 'String', char(pol));
+    P = lagrange_interpol(arrayX, arrayY);
+    set(handles.text10, 'String', char(poly2sym(P)));
+    
+   S = lagrangePasos(arrayX, arrayY);
+    set(handles.text8, 'String', char(poly2sym(S)));
+    
+    
 elseif hObject == handles.radiobutton2
-     set(handles.text8, 'String', '');
-     set(handles.text10, 'String', char(newton_regre(arrayX, arrayY)));
+     
+    
+    set(handles.text10, 'String', char(newton_regre(arrayX, arrayY)));
+    
+    D = regresiva_pasos(arrayX, arrayY);
+    set(handles.text8, 'String', num2str(D));
+   
+     
+     
 else
-     set(handles.text8, 'String', '');
-     [C, D] = NewtonP(arrayX, arrayY);
-     set(handles.text10, 'String', char(poly2sym(C)));
-     set(handles.text8, 'String', num2str(D));
+     set(handles.text10, 'String', char(poly2sym(NewtonP(arrayX, arrayY))));
+     
+     E = NewtonPPasos(arrayX, arrayY);
+     set(handles.text8, 'String', num2str(E));
+        
 end
 
 
@@ -239,7 +252,7 @@ data = get(handles.tableField,'data');
     arrayY = [];
     count = size(data,1);
     for j = 1:count
-        %disp(data{j,1});
+        disp(data{j,1});
         arrayX = [arrayX, str2double(data{j,1})];
         arrayY = [arrayY, str2double(data{j,2})];
     end
@@ -250,18 +263,50 @@ data = get(handles.tableField,'data');
    C = NewtonP(arrayX, arrayY);
 
    set(handles.text16, 'String', polyvalm(C,N)); 
-   
  
+% --- Executes on button press in pushbutton16.
+function pushbutton16_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton16 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+    data = get(handles.tableField,'data');
+
+    arrayX = [];
+    arrayY = [];
+    count = size(data,1);
+    for j = 1:count
+        disp(data{j,1});
+        arrayX = [arrayX, str2double(data{j,1})];
+        arrayY = [arrayY, str2double(data{j,2})];
+    end
+    
+   N = str2double(get(handles.edit6, 'String'));
+   
+   
+   C = NewtonP(arrayX, arrayY);
+  
+   L = polyfit(C);
+
+    set(handles.text17, 'String', L);
 
 
 % --- Executes during object creation, after setting all properties.
-function figure1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to figure1 (see GCBO)
+function text10_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to text10 (see GCBO)x
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
-function tableField_CreateFcn(hObject, eventdata, handles)
 
-function tableField_CellSelectionCallback(hObject, eventdata, handles)
+% --- Executes during object creation, after setting all properties.
+function text8_CreateFcn(hObject, eventdata, handles)
+ data = get(handles.tableField,'data');
 
-function tableField_CellEditCallback(hObject, eventdata, handles)
+    arrayX = [];
+    arrayY = [];
+    count = size(data,1);
+    for j = 1:count
+        disp(data{j,1});
+        arrayX = [arrayX, str2double(data{j,1})];
+        arrayY = [arrayY, str2double(data{j,2})];
+    end
+set(handles.text8, 'String', regresiva_pasos(arrayX,arrayY));
