@@ -22,7 +22,7 @@ function varargout = Finter(varargin)
 
 % Edit the above text to modify the response to help Finter
 
-% Last Modified by GUIDE v2.5 19-Nov-2019 21:17:28
+% Last Modified by GUIDE v2.5 25-Nov-2019 18:54:49
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -107,6 +107,9 @@ set(handles.tableField, 'Data', num_elem);
 set(handles.tableField, 'ColumnEditable', true(1,columnas));
 set(handles.text13, 'String', filas-1);
 
+P = esEqui(arrayX);
+set(handles.text20, 'String', (P));
+
 
 
 % Hints: get(hObject,'String') returns contents of n1 as text
@@ -184,9 +187,15 @@ if hObject == handles.radiobutton1
     P = lagrange_interpol(arrayX, arrayY);
     set(handles.text10, 'String', char(poly2sym(P)));
     
-   S = lagrangePasos(arrayX, arrayY);
-    set(handles.text8, 'String', char(poly2sym(S)));
+    S = lagrangePasos(arrayX,arrayY);
     
+    
+    for n=1:length(arrayX)
+        L = S(n,:);
+        Z = strcat(L);
+        set(handles.text8, 'String', (char(poly2sym(Z))));
+    end
+
     
 elseif hObject == handles.radiobutton2
      
@@ -199,7 +208,8 @@ elseif hObject == handles.radiobutton2
      
      
 else
-     set(handles.text10, 'String', char(poly2sym(NewtonP(arrayX, arrayY))));
+     P = NewtonP(arrayX, arrayY);
+     set(handles.text10, 'String', char(poly2sym(P)));
      
      E = NewtonPPasos(arrayX, arrayY);
      set(handles.text8, 'String', num2str(E));
@@ -310,3 +320,6 @@ function text8_CreateFcn(hObject, eventdata, handles)
         arrayY = [arrayY, str2double(data{j,2})];
     end
 set(handles.text8, 'String', regresiva_pasos(arrayX,arrayY));
+
+
+% --- Executes during object creation, after setting all properties.

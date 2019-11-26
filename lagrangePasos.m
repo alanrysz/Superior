@@ -1,5 +1,7 @@
-function term = lagrangePasos(x,y)
-sum=0;
+function [pasos] = lagrangePasos(x,y)
+    sum=0;
+    pasos = zeros(length(x),length(x));
+    cont=1;
     for i=1:length(x)
         p=1;
         for j=1:length(x)
@@ -8,8 +10,15 @@ sum=0;
                 p = conv(p,c);
             end
         end
+        for t=1:length(p)
+            pasos(cont, t)=p(t);
+        end
         term = p*y(i);
         sum= sum + term;
+        cont = cont+1;
     end
-    disp(term);
+        
+    for n=1:length(x)
+        display(poly2sym(pasos(n,:)));
+    end
 end

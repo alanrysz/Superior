@@ -1,14 +1,6 @@
-function [Polinomio,dif] = newton_regre(X,y)
+function Polinomio = newton_regre(X,y)
 n = length(X);
 p = length(X);
-Pasos=zeros(n,n);
-Pasos(:,1) = Y';
-for j=2:n,   
-   for k=j:n,       
-      Pasos(k,j) = (Pasos(k,j-1)-Pasos(k-1,j-1));
-   end
-end
-dif=Pasos(n,:);
 a(1) = y(1);
 for k = 1 : n - 1
    d(k, 1) = (y(k+1) - y(k))/(X(k+1) - X(k));
