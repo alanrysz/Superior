@@ -1,4 +1,4 @@
-function [C,D,Pasos] = NewtonP(X,Y) 
+function [C,D,dif] = NewtonP(X,Y) 
     n = length(X); 
     D = zeros(n,n); 
     D(:,1) = Y'; 
@@ -19,5 +19,6 @@ function [C,D,Pasos] = NewtonP(X,Y)
         C = conv(C,poly(X(k)));   
         m = length(C);   
         C(m) = C(m) + D(k,k); 
-    end    
+    end
+    dif=transpose(diag(Pasos));
 end
