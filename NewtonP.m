@@ -5,14 +5,15 @@ function [C,D,equid] = NewtonP(X,Y)
     equid=1;
     cont=2;
     resultadoOriginal=0;
-    while equid==1 & cont <= n
+    while equid==1 && cont <= n
         if cont == 2
             resultadoOriginal= X(cont) - X(cont-1);
             cont = cont+1;
-        else if resultadoOriginal== X(cont) - X(cont-1)
+        elseif resultadoOriginal== X(cont) - X(cont-1)
             cont=cont+1;
         else
             equid = 0;
+        
         end
     end
     for j=2:n,   
