@@ -191,9 +191,7 @@ if hObject == handles.radiobutton1
     
     
     for n=1:length(arrayX)
-        L = S(n,:);
-        Z = strcat(L);
-        set(handles.text8, 'String', (char(poly2sym(Z))));
+        set(handles.text8, 'String', char(poly2sym(S(n,:))));
     end
 
     
