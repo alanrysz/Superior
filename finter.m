@@ -235,9 +235,13 @@ if hObject == handles.radiobutton1
     set(handles.text10, 'String', char(poly2sym(P)));
     
 %start pasoslagrange
-    
-   set(handles.text8, 'String', 'holi');
-
+    t='';
+    for n=1:length(arrayX)
+       t=strcat(t,' (');
+       t=strcat(t,char(poly2sym(pasos(n,:))));
+       t=strcat(t,') ');
+    end
+    set(handles.text8,'String', t);
     %end pasoslagrange
 
     
