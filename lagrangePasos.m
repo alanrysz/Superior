@@ -1,4 +1,4 @@
-function [pasos] = lagrangePasos(x,y)
+function [L] = lagrangePasos(x,y)
     sum=0;
     pasos = zeros(length(x),length(x));
     cont=1;
@@ -11,14 +11,14 @@ function [pasos] = lagrangePasos(x,y)
             end
         end
         for t=1:length(p)
-            pasos(cont, t)=p(t);
+        pasos(cont, t)=p(t);
         end
         term = p*y(i);
         sum= sum + term;
         cont = cont+1;
     end
-        
+      d = 0;  
     for n=1:length(x)
-        display(poly2sym(pasos(n,:)));
+       L =char(poly2sym(pasos(n,:)));
     end
 end

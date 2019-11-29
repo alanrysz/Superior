@@ -22,7 +22,7 @@ function varargout = finter(varargin)
 
 % Edit the above text to modify the response to help finter
 
-% Last Modified by GUIDE v2.5 27-Nov-2019 23:10:00
+% Last Modified by GUIDE v2.5 28-Nov-2019 08:10:50
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -217,9 +217,11 @@ else
 end
 
 
-% --- Executes when selected object is changed in metodos.
+
+% --- Executes when selected object is changed in uipanel4.
 function metodos_SelectionChangeFcn(hObject, eventdata, handles)
-data = get(handles.tableField,'data');
+
+data = get(handles.tableField,'Data');
 
     arrayX = [];
     arrayY = [];
@@ -234,27 +236,54 @@ if hObject == handles.radiobutton1
     P = lagrange_interpol(arrayX, arrayY);
     set(handles.text10, 'String', char(poly2sym(P)));
     
-%start pasoslagrange
-    t='';
-    for n=1:length(arrayX)
-       t=strcat(t,' (');
-       t=strcat(t,char(poly2sym(pasos(n,:))));
-       t=strcat(t,') ');
+    
+   sum=0;
+    pasos = zeros(length(arrayX),length(arrayX));
+    cont=1;
+    for i=1:length(arrayX)
+        p=1;
+        for j=1:length(arrayX)
+            if j~=i
+                c = poly(arrayX(j))/(arrayX(i)-arrayX(j));
+                p = conv(p,c);
+            end
+        end
+        for t=1:length(p)
+        pasos(cont, t)=p(t);
+        end
+        term = p*arrayY(i);
+        sum= sum + term;
+        cont = cont+1;
     end
-    set(handles.text8,'String', t);
-    %end pasoslagrange
+      d = 0;  
+      t='';
+   for n=1:length(arrayX)
+       disp((poly2sym(pasos(n,:))));
+    %   List{n}=char(poly2sym(pasos(n,:)));
+    t=strcat(t,'L');
+    t=strcat(t,int2str(n-1));
+    t=strcat(t,': ');
+        t=strcat(t,' (');
+        t=strcat(t,char(poly2sym(pasos(n,:))));
+        t=strcat(t,')     +  ');
+
+    end
+    
+        set(handles.text8,'String', t);
+
+
 
     
-% elseif hObject == handles.radiobutton2
-%      
-%     L = newton_regre(arrayX, arrayY);
-%     set(handles.text10, 'String', char((L)));
-%     
-%     D = regresiva_pasos(arrayX, arrayY);
-%     set(handles.text8, 'String', num2str(D));
-%    
-%      
-%      
+elseif hObject == handles.radiobutton2
+     
+    L = newton_regre(arrayX, arrayY);
+    set(handles.text10, 'String', char((L)));
+    
+    D = regresiva_pasos(arrayX, arrayY);
+    set(handles.text8, 'String', num2str(D));
+   
+     
+     
 else
      P = NewtonP(arrayX, arrayY);
      set(handles.text10, 'String', char(poly2sym(P)));
