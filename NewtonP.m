@@ -13,4 +13,21 @@ function [C,D] = NewtonP(X,Y)
         m = length(C);   
         C(m) = C(m) + D(k,k); 
     end    
+    p1='';
+    for t=1:n
+        disp(C(1,t));
+        if(C(1,t) ~= 0)
+            p1=strcat(p1,'(');
+            p1=strcat(p1,num2str(C(1,t)));
+            if (n-t) ~= 0
+                p1=strcat(p1,')x^');
+                p1=strcat(p1,int2str(n-t));
+            else
+                p1=strcat(p1,')');
+            end
+            if t ~= n
+                p1=strcat(p1,'+');
+            end
+        end
+    end
 end
