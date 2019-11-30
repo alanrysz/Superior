@@ -22,7 +22,7 @@ function varargout = finter(varargin)
 
 % Edit the above text to modify the response to help finter
 
-% Last Modified by GUIDE v2.5 28-Nov-2019 08:10:50
+% Last Modified by GUIDE v2.5 29-Nov-2019 19:01:13
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -81,23 +81,7 @@ set(handles.tableField,'Data',cell(Nrows,Ncolumns));
 
 
 function edit6_Callback(hObject, eventdata, handles)
-data = get(handles.tableField,'data');
 
-    arrayX = [];
-    arrayY = [];
-    count = size(data,1);
-    for j = 1:count
-        disp(data{j,1});
-        arrayX = [arrayX, str2double(data{j,1})];
-        arrayY = [arrayY, str2double(data{j,2})];
-    end
-    
-   N = str2double(get(handles.edit6, 'String'));
-   
-   
-   C = NewtonP(arrayX, arrayY);
-
-   set(handles.text16, 'String', polyvalm(C,N)); 
 
 
 % --- Executes during object creation, after setting all properties.
@@ -129,7 +113,7 @@ data = get(handles.tableField,'data');
    N = str2double(get(handles.edit6, 'String'));
    
    
-   C = NewtonP(arrayX, arrayY);
+   C = CalcK(arrayX, arrayY);
 
    set(handles.text16, 'String', polyvalm(C,N)); 
 
@@ -232,63 +216,38 @@ data = get(handles.tableField,'Data');
         arrayY = [arrayY, str2double(data{j,2})];
     end
     
-if hObject == handles.radiobutton1
+%if hObject == handles.radiobutton1
+ 
+    switch(get(eventdata.NewValue,'Tag'));
+        case 'radiobutton1'
+            
     P = lagrange_interpol(arrayX, arrayY);
-    set(handles.text10, 'String', char(poly2sym(P)));
+    set(handles.text10, 'String', P);   
     
-    
-   sum=0;
-    pasos = zeros(length(arrayX),length(arrayX));
-    cont=1;
-    for i=1:length(arrayX)
-        p=1;
-        for j=1:length(arrayX)
-            if j~=i
-                c = poly(arrayX(j))/(arrayX(i)-arrayX(j));
-                p = conv(p,c);
-            end
-        end
-        for t=1:length(p)
-        pasos(cont, t)=p(t);
-        end
-        term = p*arrayY(i);
-        sum= sum + term;
-        cont = cont+1;
-    end
-      d = 0;  
-      t='';
-   for n=1:length(arrayX)
-       disp((poly2sym(pasos(n,:))));
-    %   List{n}=char(poly2sym(pasos(n,:)));
-    t=strcat(t,'L');
-    t=strcat(t,int2str(n-1));
-    t=strcat(t,': ');
-        t=strcat(t,' (');
-        t=strcat(t,char(poly2sym(pasos(n,:))));
-        t=strcat(t,')     +  ');
-
-    end
-    
-        set(handles.text8,'String', t);
-
+    R = lagrangePasos(arrayX, arrayY);
+    set(handles.text8,'String', R);
 
 
     
-elseif hObject == handles.radiobutton2
-     
-    L = newton_regre(arrayX, arrayY);
+%elseif hObject == handles.radiobutton2
+        case 'radiobutton2' 
+
+    L = NewtonP(arrayX, arrayY);
     set(handles.text10, 'String', char((L)));
     
     D = regresiva_pasos(arrayX, arrayY);
     set(handles.text8, 'String', num2str(D));
-   
      
+% else
+        case 'radiobutton3' 
+            
      
-else
-     P = NewtonP(arrayX, arrayY);
-     set(handles.text10, 'String', char(poly2sym(P)));
+    
+    P = NewtonP(arrayX, arrayY);
+     set(handles.text10, 'String', P);
      
      E = NewtonPPasos(arrayX, arrayY);
      set(handles.text8, 'String', num2str(E));
-        
-end
+
+            
+    end

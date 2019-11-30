@@ -1,4 +1,4 @@
-function [C,D] = NewtonP(X,Y) 
+function [p1] = NewtonP(X,Y) 
     n = length(X); 
     D = zeros(n,n); 
     D(:,1) = Y'; 

@@ -36,6 +36,7 @@ while o < (n+1) && M1(o-2)~=0
   R(o)=((R(o-1))/(M1(o-2))).*(A(o-1)).*(M1(o-1));
   o= o+1;
 end
+display(d);
 Poli = sum(R);
 Polinomio = simplify(Poli);
 Polinomio = vpa(expand(Polinomio),4);

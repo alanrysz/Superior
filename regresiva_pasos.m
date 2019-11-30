@@ -10,37 +10,6 @@ for j = 2 : n - 1
       d(k, j) = (d(k+1, j - 1) - d(k, j - 1))/(X(k+j) - X(k));
    end
 end
-display(d);
-M = d;
- M1 = vpa(M(1,:));
-for j = 2 : n
-   a(j) = d(1, j-1);
-end
-Df(1) = 1;
-c(1) = a(1);
-for j = 2 : n
-   Df(j)=(p - X(j-1)) .* Df(j-1);
-   c(j) = a(j) .* Df(j);
-end
-syms x
-aux = length(M1);
-display(M);
-display(M1);
-m = 1;
-while m < (n+1)
-  A(m) = (x-(X(m)));
-  m=m+1;
-end
-  o = 3;
-  R(1)=vpa(y(1));
-  R(2)=(A(1).*(M1(1)));
-while o < (n+1) && M1(o-2)~=0
-  R(o)=((R(o-1))/(M1(o-2))).*(A(o-1)).*(M1(o-1));
-  o= o+1;
-end
-Poli = sum(R);
-Polinomio = simplify(Poli);
-Polinomio = expand(Polinomio);
 
 l=zeros(n,n);
 l(:,1)=y';
